@@ -1,12 +1,12 @@
 # Data Structure Collection -- Stack
-# A stack follows the LIFO rule, the last item in a stack is the first one to be pushed out.
+# A stack follows the LIFO rule, the last item in a stack is the first one to be popped out.
 # To initialize a stack: Stack()
 # To push an item in the stack: %stack.push(item)
 # To pop an item out of stack: %stack.pop()
 # To check if your stack is empty: %stack.is_empty() RETURN VALUE -> BOOL
 # To get the size of a stack: %stack.size() RETURN VALUE -> INT
 # To add a stack to another use +
-# To compare to stacks use =
+# To compare to stacks use ==
 # To print out a stack use print(str(%stack)) or simply print(%stack)
 
 
