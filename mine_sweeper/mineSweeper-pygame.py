@@ -17,7 +17,7 @@ class Game:
         self.__check()
         self.board = self.__create()
         self.__lay_mine()
-        sizes = {"start": (360, 400), "1": (400, 400), "2": (720, 500), "3": (1000, 720)}
+        sizes = {"start": (360, 400), "1": (400, 400), "2": (600, 500), "3": (830, 720)}
         if number == 10:
             self.window = pygame.display.set_mode(sizes["1"])
         elif number == 50:
@@ -186,14 +186,24 @@ class Game:
             self.game_over(1)
 
     def game_over(self, code):
+        offset = self.window.get_width()
+        font = pygame.font.SysFont('Comic Sans MS', 20)
+
         if code == 0:
+            surface = font.render('YOU LOSE', True, (255, 0, 0))
+            self.window.blit(surface, (offset-120, 100))
             print("GameOver!")
             self.gameover = True
 
         if code == 1:
+            surface = font.render('YOU WIN', True, (0, 255, 0))
+            self.window.blit(surface, (offset-120, 100))
             print("Win!")
             self.gameover = True
-            exit()
+
+
+
+
 
     def calculate(self, cid):
         cell = self.board[cid]
