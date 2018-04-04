@@ -1,5 +1,5 @@
 # python3.6
-# MineSweeper Ver0.2.0
+# MineSweeper Ver0.2.1
 # By Tianqi W
 
 import random
@@ -69,6 +69,11 @@ class Game:
             pygame.draw.rect(self.window, (255, 1, 0), self.board[i * self.x + j].rect)
             self.window.blit(self.font.render('X', True, (0, 0, 0)),
                              (self.board[i * self.x + j].rect.x + 5, self.board[i * self.x + j].rect.y + 2))
+        elif value == "P":
+            pygame.draw.rect(self.window, (255, 119, 0), self.board[i * self.x + j].rect)
+            self.window.blit(self.font.render('P', True, (0, 0, 0)),
+                             (self.board[i * self.x + j].rect.x + 5, self.board[i * self.x + j].rect.y + 2))
+
 
 
 
@@ -88,18 +93,26 @@ class Game:
 
         def open(self):
             if not self.opened:
-                if self.is_mine:
-                    self.parent.game_over(0)
-                else:
-                    self.status = self.parent.calculate(self.id)
-                    self.opened = True
+                if not self.flagged:
+                    if self.is_mine:
+                        self.parent.game_over(0)
+                    else:
+                        self.status = self.parent.calculate(self.id)
+                        self.opened = True
 
-        def flag(self):  # TODO
-            pass
+        def flag(self):
+            if not self.opened:
+                if not self.flagged:
+                    self.flagged = True
+                else:
+                    self.flagged = False
 
         def __str__(self):
-            if not self.opened:
+            if self.flagged:
+                return 'P'
+            elif not self.opened:
                 return '*'
+
             else:
                 if not self.status:
                     return '`'
@@ -107,11 +120,16 @@ class Game:
                     return str(self.status)
 
         def __unicode__(self):
-            if not self.opened:
+            if self.flagged:
+                return 'P'
+            elif not self.opened:
                 return '*'
-            else:
-                return str(self.status)
 
+            else:
+                if not self.status:
+                    return '`'
+                else:
+                    return str(self.status)
 
     def __check(self):
         area = self.x * self.y
@@ -207,7 +225,7 @@ class Game:
 
     def calculate(self, cid):
         cell = self.board[cid]
-        if not cell.opened:
+        if not cell.opened and not cell.flagged:
             up = False
             down = False
             left = False
@@ -287,6 +305,14 @@ class Game:
                             if i.rect.collidepoint(x, y):
                                 print(i.id+1)
                                 return i.id+1
+                    elif event.__dict__["button"] == 3:
+                        x, y = event.__dict__["pos"]
+                        for i in self.board:
+                            if i.rect.collidepoint(x, y):
+                                print(str(i.id+1), 'flagged')
+                                i.flag()
+                                self.get_board()
+                                return None
                 else:
                     return
 
