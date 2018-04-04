@@ -1,5 +1,5 @@
 # python3.6
-# MineSweeper Ver0.1.0
+# MineSweeper Ver0.1.1
 # By Tianqi W
 
 import random
@@ -7,9 +7,9 @@ import random
 
 class Game:
     def __init__(self, size, number):
-        self.x = size[0]
-        self.y = size[1]
-        self.number = number
+        self.x = int(size[0])
+        self.y = int(size[1])
+        self.number = int(number)
         self.__check()
         self.board = self.__create()
         self.__lay_mine()
@@ -183,7 +183,7 @@ def main():
     cfg = input("输入大小 和雷的数量（例子：10 10 10）")
     cfg = cfg.split()
 
-    game = Game((10,10),10)
+    game = Game((cfg[0],cfg[1]),cfg[2])
     game.get_board()
     pos = input()
     while True:
@@ -192,6 +192,7 @@ def main():
         else:
             game.board[int(pos) - 1].open()
             game.get_board()
+            game.check_board()
             break
 
     while True:
